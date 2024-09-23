@@ -45,10 +45,11 @@ public class BoardService {
 
 
     @Transactional
-    public void 게시글쓰기(BoardRequest.SaveDTO saveDTO, User sessionUser) {
+    public BoardResponse.DTO 게시글쓰기(BoardRequest.SaveDTO saveDTO, User sessionUser) {
 
         Board boardEntity = saveDTO.toEntity(sessionUser);
-        boardRepository.save(boardEntity);
+        Board boardPS = boardRepository.save(boardEntity); // 이걸 그대로 리턴하면 안됨, DTO 로 바꿔주어야 한다. 아니면 다 터짐.
+        return new BoardResponse.DTO(boardPS); // 영속성 객체를 넣은게 아니라, DTO 로 바꿨다.
     }
 
     public BoardResponse.DTO 게시글수정화면(int id, User sessionUser) {
